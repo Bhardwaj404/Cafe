@@ -48,7 +48,13 @@ export async function createOrderServer(input: CreateOrderInput) {
 
   // Calculate totals server-side
   let subtotal = 0
-  const orderItemsData = []
+  const orderItemsData: {
+    menuItemId: string
+    quantity: number
+    unitPrice: number
+    customizations: string
+    instructions: string | null
+  }[] = []
 
   for (const item of input.items) {
     const menuItem = menuItemMap.get(item.menuItemId)!

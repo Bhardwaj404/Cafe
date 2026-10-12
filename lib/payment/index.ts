@@ -25,17 +25,17 @@ export interface PaymentGateway {
   isMock: boolean
 }
 
+import { RazorpayGateway } from "./razorpay"
+import { MockGateway } from "./mock"
+
 // Import the appropriate gateway
 function getGateway(): PaymentGateway {
   if (
     process.env.RAZORPAY_KEY_ID &&
     process.env.RAZORPAY_KEY_SECRET
   ) {
-    // Dynamically require to avoid loading Razorpay SDK in non-production
-    const { RazorpayGateway } = require("./razorpay") as typeof import("./razorpay")
     return new RazorpayGateway()
   }
-  const { MockGateway } = require("./mock") as typeof import("./mock")
   return new MockGateway()
 }
 
