@@ -2,7 +2,7 @@ import type { NextRequest } from "next/server"
 import { auth } from "@/lib/auth"
 import { sseClients } from "../[id]/status/route"
 
-export const dynamic = "force-dynamic"
+// export const dynamic = "force-dynamic"
 
 export async function GET(request: NextRequest) {
   const session = await auth()
