@@ -23,7 +23,8 @@ export interface MenuItemWithCustomizations {
   stockCount: number | null
   customizations?: {
     id: string
-    name: string
+    name?: string
+    label?: string
     type: "SIZE" | "EXTRA" | "SPICE_LEVEL"
     options: string // JSON array of CustomOption or string
     required: boolean
@@ -55,9 +56,10 @@ export function ItemCustomModal({ item, onClose }: ItemCustomModalProps) {
           const first = parsedOptions[0]
           const label = typeof first === "string" ? first : first.label
           const priceModifier = typeof first === "string" ? 0 : first.priceModifier
+          const groupTitle = group.label || group.name || "Option"
           defaults[group.id] = {
             customizationId: group.id,
-            label: group.name,
+            label: groupTitle,
             selectedOption: label,
             priceModifier,
           }
@@ -208,12 +210,13 @@ export function ItemCustomModal({ item, onClose }: ItemCustomModalProps) {
             }
 
             const isMulti = group.type === "EXTRA"
+            const groupTitle = group.label || group.name || "Option"
 
             return (
               <div key={group.id} className="space-y-2">
                 <div className="flex items-center justify-between">
                   <h4 className="text-sm font-semibold text-zinc-800 dark:text-zinc-200">
-                    {group.name}
+                    {groupTitle}
                   </h4>
                   {group.required && (
                     <span className="text-[11px] font-medium text-amber-600 bg-amber-50 dark:bg-amber-950/40 px-2 py-0.5 rounded-md">
@@ -238,7 +241,7 @@ export function ItemCustomModal({ item, onClose }: ItemCustomModalProps) {
                         onClick={() =>
                           handleSelectOption(
                             group.id,
-                            group.name,
+                            groupTitle,
                             optLabel,
                             optPrice,
                             isMulti
